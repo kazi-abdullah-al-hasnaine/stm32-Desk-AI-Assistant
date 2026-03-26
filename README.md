@@ -4,6 +4,83 @@ A 4-mode OLED display connected to your PC via USB, showing live system stats, c
 
 ---
 
+## Demo
+
+![Demo](stuff/vid.gif)
+
+---
+
+## Python UI
+
+The desktop app is a dark-themed Tkinter window with four tabs. It handles everything — sending live data to the OLED, managing reminders, setting your city for weather, and running the AI voice assistant.
+
+<table>
+  <tr>
+    <td align="center"><img src="stuff/1.jpg" width="220"/><br/><sub><b>Monitor Tab</b></sub></td>
+    <td align="center"><img src="stuff/2.jpg" width="220"/><br/><sub><b>Clock & Weather Tab</b></sub></td>
+    <td align="center"><img src="stuff/3.jpg" width="220"/><br/><sub><b>Reminders Tab</b></sub></td>
+    <td align="center"><img src="stuff/4.jpg" width="220"/><br/><sub><b>AI Assistant Tab</b></sub></td>
+  </tr>
+</table>
+
+| Tab | What it does |
+|---|---|
+| Monitor | Live CPU / RAM / GPU bars with color coding — turns yellow above 60%, red above 85% |
+| Clock | Full clock display with date + live weather for your configured city |
+| Reminders | Add / remove reminders (max 5) — saved to `stm32_config.json` and sent to the OLED |
+| AI | Paste your Groq API key, monitor live AI status, read the conversation log, or trigger AI manually |
+
+Settings and reminders persist between runs in `stm32_config.json`.
+
+---
+
+## How to Use
+
+### Buttons
+
+| Button | Pin | Action |
+|---|---|---|
+| Mode button | PA3 | Cycles through Monitor → Clock/Weather → Reminders (normal mode only) |
+| AI button | PB0 | Toggles AI mode on or off |
+
+A thin indicator bar appears at the bottom of the OLED during mode transitions and fades away after ~1 second.
+
+### Normal Modes (cycle with PA3 button)
+
+```
+Monitor  →  Clock / Weather  →  Reminders  →  Monitor  → ...
+```
+
+### AI Mode (toggle with PB0 button)
+
+Press **PB0** to enter AI mode. The OLED shows **AI MODE** at the top and cycles through four states:
+
+| OLED State | What's happening |
+|---|---|
+| Idle | Waiting — shows "Press button to ask a question" |
+| Listening | Mic icon with animated dots — recording your voice |
+| Thinking | Spinner animation — waiting for Groq to respond |
+| Speaking | Animated sound wave bars — TTS audio playing |
+
+Press **PB0** again at any time to exit AI mode and return to the normal display.
+
+You can also trigger AI mode from the Python UI using the **▶ Test AI** button in the AI tab — no physical button needed.
+
+The conversation loops continuously (listen → think → speak → listen…) until you press PB0 to stop.
+
+### Monitor Page
+Shows live CPU, RAM, and GPU usage sent from your PC.
+
+### Clock / Weather Page
+Shows the current time, date, and weather for your configured city.
+Update the city from the **Clock tab** in the Python UI.
+
+### Reminders Page
+Shows up to 5 reminders. Add and remove them from the **Reminders tab** in the Python UI.
+If more than 3 reminders are set, the list auto-scrolls every 3 seconds.
+
+---
+
 ## What You Need
 
 **Hardware**
@@ -156,66 +233,6 @@ That's it — the key is saved to `stm32_config.json` and loaded automatically o
 
 ---
 
-## How to Use
-
-### Buttons
-
-| Button | Pin | Action |
-|---|---|---|
-| Mode button | PA3 | Cycles through Monitor → Clock/Weather → Reminders (normal mode only) |
-| AI button | PB0 | Toggles AI mode on or off |
-
-A thin indicator bar appears at the bottom of the screen during mode transitions and fades away after ~1 second.
-
-### Normal Modes (cycle with PA3 button)
-
-```
-Monitor  →  Clock / Weather  →  Reminders  →  Monitor  → ...
-```
-
-### AI Mode (toggle with PB0 button)
-
-Press **PB0** to enter AI mode. The OLED shows **AI MODE** at the top and cycles through four states:
-
-| OLED State | What's happening |
-|---|---|
-| Idle | Waiting — shows "Press button to ask a question" |
-| Listening | Mic icon with animated dots — recording your voice |
-| Thinking | Spinner animation — waiting for Groq to respond |
-| Speaking | Animated sound wave bars — TTS audio playing |
-
-Press **PB0** again at any time to exit AI mode and return to the normal display.
-
-You can also trigger AI mode from the Python UI using the **▶ Test AI** button in the AI tab — no physical button needed.
-
-The AI conversation loops continuously (listen → think → speak → listen…) until you press PB0 to stop.
-
-### Monitor Page
-Shows live CPU, RAM, and GPU usage sent from your PC.
-
-### Clock / Weather Page
-Shows the current time, date, and weather for your configured city.
-Update the city from the **Clock tab** in the Python UI.
-
-### Reminders Page
-Shows up to 5 reminders. Add and remove them from the **Reminders tab** in the Python UI.
-If more than 3 reminders are set, the list auto-scrolls every 3 seconds.
-
----
-
-## Python UI Overview
-
-| Tab | What it does |
-|---|---|
-| Monitor | Live CPU / RAM / GPU bars with color coding |
-| Clock | Live clock display + city input for weather |
-| Reminders | Add / remove reminders saved to `stm32_config.json` |
-| AI | Groq API key input, live status indicator, conversation log, manual trigger button |
-
-Settings and reminders are saved to `stm32_config.json` in the same folder as the script — they persist between runs.
-
----
-
 ## Troubleshooting
 
 **OLED not showing anything**
@@ -266,4 +283,6 @@ Settings and reminders are saved to `stm32_config.json` in the same folder as th
 | `stm32_monitor.ino` | Arduino sketch for STM32 |
 | `monitor_ui.py` | Python desktop UI |
 | `stm32_config.json` | Auto-generated config (reminders, city, Groq API key) |
+| `stuff/1.jpg` – `stuff/4.jpg` | UI screenshots |
+| `stuff/vid.gif` | Demo recording |
 | `README.md` | This file |
