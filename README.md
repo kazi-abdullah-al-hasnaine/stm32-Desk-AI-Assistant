@@ -16,10 +16,10 @@ The desktop app is a dark-themed Tkinter window with four tabs. It handles every
 
 <table>
   <tr>
-    <td align="center"><img src="stuff/1.jpg" width="220"/><br/><sub><b>Monitor Tab</b></sub></td>
-    <td align="center"><img src="stuff/2.jpg" width="220"/><br/><sub><b>Clock & Weather Tab</b></sub></td>
-    <td align="center"><img src="stuff/3.jpg" width="220"/><br/><sub><b>Reminders Tab</b></sub></td>
-    <td align="center"><img src="stuff/4.jpg" width="220"/><br/><sub><b>AI Assistant Tab</b></sub></td>
+    <td align="center"><img src="stuff/1.png" width="220"/><br/><sub><b>Monitor Tab</b></sub></td>
+    <td align="center"><img src="stuff/2.png" width="220"/><br/><sub><b>Clock & Weather Tab</b></sub></td>
+    <td align="center"><img src="stuff/3.png" width="220"/><br/><sub><b>Reminders Tab</b></sub></td>
+    <td align="center"><img src="stuff/4.png" width="220"/><br/><sub><b>AI Assistant Tab</b></sub></td>
   </tr>
 </table>
 
